@@ -1,0 +1,11 @@
+{
+  "name": "lonely/meconect",
+  "autoload" : {
+    "psr-4": {
+      "App\\": "app/"
+    }
+  },
+  "require": {
+    "ext-pdo": "*"
+  }
+}

@@ -1,0 +1,40 @@
+# Ignore environment variables file
+.env
+
+# Node modules
+node_modules/*
+
+# Vendor directory
+vendor/
+
+# Lock files
+bun.lockb
+composer.lock
+
+# IDE specific files
+.idea/
+
+# Logs
+*.log
+
+# Temporary files
+tmp/
+temp/
+.DS_Store
+
+# Build artifacts
+dist/
+build/
+public/build/
+public/dist/
+*.zip
+
+# Operating system files
+Thumbs.db
+ehthumbs.db
+Icon?
+Desktop.ini
+
+# Ignore Tailwind CSS generated files (if applicable)
+public/css/
+public/js/
