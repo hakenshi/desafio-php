@@ -1,5 +1,5 @@
 <?php
-include __DIR__ . "/includes/header.php";
+include_once __DIR__ . "/includes/header.php";
 ?>
     <main class="flex justify-center items-center h-screen px-4 py-8 bg-gradient-to-br from-indigo-400 via-indigo-600 to-indigo-800">
         <div class="container flex justify-center flex-col items-center">

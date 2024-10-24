@@ -1,16 +1,15 @@
 <?php
-require __DIR__ . "/vendor/autoload.php";
 session_start();
+require __DIR__ . "/vendor/autoload.php";
 use App\controllers\UserController;
+
 
 $action = $_GET['action'] ?? null;
 
-
-if (!isset($_SESSION['user']) && !isset($action)) {
+if (!isset($action)) {
     header("Location: resources/views/login-formulario.php");
     exit();
 }
-
 $controller = new UserController();
 
 echo $controller->$action();

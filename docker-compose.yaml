@@ -6,13 +6,14 @@ services:
     volumes:
       - .:/var/www/html
     environment:
-      DB_HOST: localhost
-      DB_PORT: "${DB_PORT}:3306"
+      DB_HOST: db
+      DB_PORT: 3306
       DB_NAME: "${DB_NAME}"
       DB_USER: "${DB_USER}"
       DB_PASSWORD: "${DB_PASSWORD}"
     networks:
       - app-network
+
   db:
     image: mysql:8.0
     environment:
@@ -23,10 +24,13 @@ services:
     ports:
       - "${DB_PORT}:3306"
     volumes:
-      - localhost:/var/lib/mysql
+      - mysql-data:/var/lib/mysql
     networks:
       - app-network
 
 networks:
   app-network:
     driver: bridge
+
+volumes:
+  mysql-data:

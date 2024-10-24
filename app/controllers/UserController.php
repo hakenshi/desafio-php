@@ -12,18 +12,29 @@ class UserController
     {
         if (isset($_SESSION['user'])) {
             header('Location: resources/views/home.php');
+            exit();
         }
     }
 
     public function login()
     {
         $data = json_decode(file_get_contents("php://input"));
-        $user = new User();
-        $_SESSION['user'] = $user->authUser($data);
-        echo json_encode([
-            'message' => 'Usuário logado com sucesso!',
-            'status' => 200
-        ]);
+        try {
+            $user = new User();
+            $_SESSION['user'] = $user->authUser($data);
+            echo json_encode([
+                'message' => 'Usuário logado com sucesso!',
+                'status' => 200
+            ]);
+            exit();
+        }
+        catch (Exception $e) {
+            echo json_encode([
+                'message' => $e->getMessage(),
+                'status' => 400
+            ]);
+            exit();
+        }
     }
 
 
@@ -32,7 +43,8 @@ class UserController
         $data = json_decode(file_get_contents("php://input"));
         try {
             if (!filter_var($data->email_user, FILTER_VALIDATE_EMAIL)) {
-                throw new Exception("Por favor insira um email válido.");
+                echo new Exception("Por favor insira um email válido.");
+                exit();
             }
             $data->password_user = password_hash($data->password_user, CRYPT_SHA256);
             $_SESSION['user'] = User::create($data);
@@ -52,10 +64,10 @@ class UserController
 
     public function logout()
     {
+        if ($_SESSION['user']) {
+            unset($_SESSION['user']);
+            session_destroy();
+            header('Location: resources/views/login-formulario.php');
+        }
     }
-
-    public function index()
-    {
-    }
-
 }

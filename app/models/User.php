@@ -43,14 +43,35 @@ class User
         }
     }
 
+    /**
+     * @throws \Exception
+     */
     public static function create($data)
     {
         $db = new Database();
         try {
+
+            if ((new User())->exists($data)) {
+                throw new \Exception("Um usuário com este email já existe.");
+            }
+
             $statement = $db->connection->prepare("INSERT INTO users (name_user, email_user, password_user, title_user, code_user) VALUES (?, ?, ?, ?, ?)");
             $statement->execute([$data->name_user, $data->email_user, $data->password_user, $data->title_user, $data->code_user]);
             return (new User())->getUser($db->connection->lastInsertId());
         } catch (\PDOException $e) {
+            throw new \PDOException($e->getMessage(), (int)$e->getCode());
+        }
+    }
+
+    public function exists($data){
+        try {
+            $db = new Database();
+            $statement = $db->connection->prepare("SELECT count(*) as user_count FROM users WHERE email_user = ?");
+            $statement->execute([$data->email_user]);
+            $user = $statement->fetch(\PDO::FETCH_ASSOC);
+            return $user["user_count"] == 1;
+        }
+        catch (\PDOException $e) {
             throw new \PDOException($e->getMessage(), (int)$e->getCode());
         }
     }

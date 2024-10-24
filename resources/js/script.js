@@ -27,8 +27,10 @@ const login = (form) => {
         if (response.ok) {
             const json = JSON.parse(await response.text())
             if (json.status === 200) {
-                alert("Login efetuado com sucesso.")
+                alert(json.message)
                 location.replace("/index.php?action=auth")
+            } else {
+                alert(json.message)
             }
         }
     }).catch((e) => {
@@ -80,7 +82,10 @@ const cadastro = (form) => {
         if (response.ok) {
             const json = JSON.parse(await response.text())
             if (json.status === 201) {
+                alert(json.message)
                 location.replace("/index.php?action=auth")
+            } else {
+                alert(json.message)
             }
         }
     }).catch((e) => {
