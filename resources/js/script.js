@@ -1,5 +1,3 @@
-const loginForm = document.querySelector("#login")
-const registerForm = document.querySelector('#register-form')
 const response = await fetch(`https://jsonplaceholder.typicode.com/posts/${Math.floor(Math.random() * 20)}`)
 const data = await response.json()
 const login = (form) => {
@@ -27,7 +25,6 @@ const login = (form) => {
         if (response.ok) {
             const json = JSON.parse(await response.text())
             if (json.status === 200) {
-                alert(json.message)
                 location.replace("/index.php?action=auth")
             } else {
                 alert(json.message)
@@ -82,7 +79,6 @@ const cadastro = (form) => {
         if (response.ok) {
             const json = JSON.parse(await response.text())
             if (json.status === 201) {
-                alert(json.message)
                 location.replace("/index.php?action=auth")
             } else {
                 alert(json.message)
@@ -92,12 +88,33 @@ const cadastro = (form) => {
         console.log(e)
     });
 }
+const loginForm = document.querySelector("#login")
 
 loginForm && loginForm.addEventListener('submit', (e) => {
     e.preventDefault()
     login(e.target)
 })
+const registerForm = document.querySelector('#register-form')
+
 registerForm && registerForm.addEventListener('submit', (e) => {
     e.preventDefault()
     cadastro(e.target)
+})
+
+const logoutForm = document.querySelector("#logout")
+logoutForm && logoutForm.addEventListener('submit', (e) => {
+    e.preventDefault()
+    if (confirm("Tem certeza de que deseja sair?")) {
+        fetch('/index.php?action=logout', {
+            method: "POST",
+            accept: "application/json"
+        }).then(async (response) => {
+            const json = JSON.parse(await response.text())
+            if (json.status === 204) {
+                location.replace('/index.php')
+            }
+        }).catch(e => {
+            console.log(e)
+        })
+    }
 })

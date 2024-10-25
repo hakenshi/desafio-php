@@ -1,16 +1,18 @@
 <?php
+ob_start();
 include_once __DIR__ . "/includes/header.php";
-if (!isset($_SESSION['user'])) {
-    header('location: resources/views/login-formulario.php');
+if (!isset($_SESSION['user']) || !$_SESSION['user']) {
+    header('Location: /index.php');
+    exit();
 }
 $user = $_SESSION['user'];
 ?>
 <div class="grid h-screen grid-rows-[auto_1fr]">
-    <header class="w-screen p-5 bg-indigo-700 text-white font-bold">
+    <header class="w-screen p-5 bg-indigo-700 text-white font-bold shadow-xl">
         <nav class="flex justify-between items-center w-full">
-            <p> Olá, <?php echo $user['name_user']?></p>
+            <p> Olá, <?php echo $user['name_user'] ?></p>
             <div>
-                <form action="/index.php?action=logout" method="post">
+                <form id="logout">
                     <button>Sair</button>
                 </form>
             </div>
@@ -23,9 +25,12 @@ $user = $_SESSION['user'];
                 <img height="100" width="100" src="https://avatar.iran.liara.run/public" alt="random-img">
             </div>
             <p class="line-clamp-1">Email: <?php echo $user['email_user'] ?></p>
-            <p class="line-clamp-1">Título: <?php echo $user['title_user']?></p>
+            <p class="line-clamp-1">Título: <?php echo $user['title_user'] ?></p>
             <p class="line-clamp-1">Código/Nome do usuário: <?php echo $user['code_user'] ?></p>
         </div>
     </main>
 </div>
-<?php include_once __DIR__ . "/includes/footer.php";
+<?php
+include_once __DIR__ . "/includes/footer.php";
+ob_end_flush();
+?>

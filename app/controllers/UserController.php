@@ -64,10 +64,19 @@ class UserController
 
     public function logout()
     {
-        if ($_SESSION['user']) {
+        if ($_SESSION) {
             unset($_SESSION['user']);
-            session_destroy();
-            header('Location: resources/views/login-formulario.php');
+            echo json_encode([
+                'status' => 204,
+            ]);
+            exit();
+        }
+        else {
+            echo json_encode([
+                'status' => 404,
+                'message' => "Usuário não está logado."
+            ]);
+            exit();
         }
     }
 }
